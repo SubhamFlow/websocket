@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Websocket</title>
+</head>
+<body>
+    <h1>Real time communication</h1>
+    <div class="messeges">
+
+    </div>
+
+    <input type="text" id="messege" placeholder="Enter messege">
+    <button id="sendbtn">Send</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket=io();
+        const btn=document.getElementById("sendbtn");
+        const messegeinput=document.getElementById("messege");
+        const showmesseges=document.querySelector(".messeges");
+
+        socket.on("messege",(messege)=>{
+            let p=document.createElement("p");
+          p.innerText=messege;
+          showmesseges.appendChild(p);
+            
+        })
+        
+        //enter messege
+        messegeinput.addEventListener("keydown",(e)=>{
+        if(e.key==="Enter"){
+        const messege = messegeinput.value.trim();
+    if (!messege) return;
+
+    socket.emit("sender-messege", messege);
+    messegeinput.value = "";
+            }
+        })
+
+        btn.addEventListener("click",(e)=>{
+            const messege=messegeinput.value;
+            console.log(messege);
+            socket.emit("sender-messege",messege);
+            
+        })
+    </script> 
+</body>
+</html>
