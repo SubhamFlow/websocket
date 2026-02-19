@@ -98,31 +98,34 @@ h1 {
 /* Input + Button container */
 .input-area {
   width: 90%;
-  max-width:460px;
+  max-width: 500px;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Input field */
 #messege {
   flex: 1;
-  padding: 12px;
+  height: 42px;
+  padding: 0 15px;
   border-radius: 25px;
   border: none;
   outline: none;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 /* Button */
 #sendbtn {
-  padding: 12px 20px;
+  height: 42px;
+  padding: 0 18px;
   border-radius: 25px;
   border: none;
   background: #4facfe;
   color: white;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 #sendbtn:hover {
