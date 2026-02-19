@@ -1,0 +1,131 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Body layout */
+body {
+  background: linear-gradient(135deg, #1f1f2e, #2c3e50);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Heading */
+h1 {
+  color: #fff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Chat container */
+.messeges {
+  width: 90%;
+  max-width: 500px;
+  height: 350px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  padding: 15px;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  margin-bottom: 15px;
+}
+
+/* Individual message */
+.messeges p {
+  background: #4facfe;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin: 6px 0;
+  width: fit-content;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+/* Input section */
+#messege {
+  width: 70%;
+  max-width: 350px;
+  padding: 10px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+/* Button */
+#sendbtn {
+  padding: 10px 18px;
+  border-radius: 25px;
+  border: none;
+  background: #4facfe;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#sendbtn:hover {
+  background: #00c6ff;
+  transform: scale(1.05);
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .messeges {
+    height: 280px;
+  }
+
+  #messege {
+    width: 65%;
+    font-size: 14px;
+  }
+
+  #sendbtn {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+}
+
+/* Input + Button container */
+.input-area {
+  width: 90%;
+  max-width:460px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Input field */
+#messege {
+  flex: 1;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Button */
+#sendbtn {
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  background: #4facfe;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#sendbtn:hover {
+  background: #00c6ff;
+  transform: scale(1.05);
+}
