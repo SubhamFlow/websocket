@@ -36,16 +36,21 @@ h1 {
 }
 
 /* CHAT BOX */
+
 .messeges {
-  flex: 1;
+  flex: auto;
   height: 380px;
   background: rgba(255,255,255,0.08);
   border-radius: 15px;
   padding: 15px;
   overflow-y: auto;
+  overflow-x: hidden;
   margin-bottom: 12px;
   backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
 }
+
 
 /* CHAT MESSAGE */
 .messeges p {
@@ -54,8 +59,11 @@ h1 {
   padding: 8px 12px;
   border-radius: 12px;
   margin-bottom: 6px;
-  max-width: fit-content;
+  max-width: 80%;
+  word-wrap: break-word;
+  width: fit-content;
 }
+
 
 /* INPUT AREA */
 .input-area {
