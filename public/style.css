@@ -1,4 +1,4 @@
-/* Reset */
+/* RESET */
 * {
   margin: 0;
   padding: 0;
@@ -6,99 +6,328 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-/* Body layout */
+/* BODY */
 body {
   background: linear-gradient(135deg, #1f1f2e, #2c3e50);
-  height: 100vh;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* MAIN LAYOUT */
+.main-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  gap: 25px;
+  align-items: stretch;
+}
+
+/* LEFT CHAT SECTION */
+.chat-section {
+  flex: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Heading */
+/* HEADING */
 h1 {
-  color: #fff;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-/* Chat container */
-.messeges {
-  width: 90%;
-  max-width: 500px;
-  height: 350px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 15px;
-  padding: 15px;
-  overflow-y: auto;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  color: white;
   margin-bottom: 15px;
 }
 
-/* Individual message */
-.messeges p {
-  background: #4facfe;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 12px;
-  margin: 6px 0;
-  width: fit-content;
-  max-width: 80%;
-  word-wrap: break-word;
+/* CHAT BOX */
+.messeges {
+  flex: 1;
+  height: 380px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 15px;
+  padding: 15px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  backdrop-filter: blur(10px);
 }
 
-/* Input + Button container */
+/* CHAT MESSAGE */
+.messeges p {
+  background: #4facfe;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  max-width: fit-content;
+}
+
+/* INPUT AREA */
 .input-area {
-  width: 90%;
-  max-width: 500px;
   display: flex;
-  align-items: center;
   gap: 10px;
 }
 
-/* Input */
 #messege {
   flex: 1;
   height: 45px;
-  padding: 0 15px;
   border-radius: 25px;
   border: none;
-  outline: none;
-  font-size: 14px;
+  padding: 0 15px;
 }
 
-/* Button */
 #sendbtn {
   height: 45px;
   padding: 0 20px;
   border-radius: 25px;
   border: none;
   background: #4facfe;
-  color: #fff;
-  font-size: 14px;
+  color: white;
   cursor: pointer;
-  transition: 0.3s ease;
 }
 
-#sendbtn:hover {
+/* RIGHT MUSIC SECTION */
+.music-section {
+  flex: 1;
+  height: 460px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 15px;
+  padding: 15px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* MUSIC TITLE */
+.music-section h2 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+/* SEARCH BAR */
+.song-search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.song-search input {
+  flex: 1;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  padding: 0 12px;
+}
+
+.song-search button {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 20px;
+  border: none;
+  background: #4facfe;
+  color: white;
+  cursor: pointer;
+}
+
+/* SONG RESULTS BOX */
+#results {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+/* SONG ITEM */
+.song-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.song-item:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.song-item img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+}
+
+.song-item div {
+  color: white;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+/* MUSIC PLAYER BAR */
+#audioPlayer {
+  width: 100%;
+  margin-top: auto;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.12);
+  padding: 6px;
+}
+
+
+
+/* CUSTOM PLAYER */
+.custom-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.12);
+  padding: 12px;
+  border-radius: 20px;
+  margin-top: auto;
+  backdrop-filter: blur(10px);
+}
+
+.custom-player img {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.player-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#songTitle {
+  color: white;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+/* PROGRESS BAR */
+.progress-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#progress {
+  height: 100%;
+  width: 0%;
+  background: #4facfe;
+  border-radius: 10px;
+  transition: width 0.1s linear;
+}
+
+/* TIME */
+.time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #ddd;
+  margin-top: 4px;
+}
+
+/* PLAY BUTTON */
+#playPause {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  border: none;
+  background: #4facfe;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#playPause:hover {
   background: #00c6ff;
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
-/* Mobile responsive */
-@media (max-width: 600px) {
+
+/* progress-bar */
+/* Progress range */
+#progressBar {
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2);
+  outline: none;
+  cursor: pointer;
+}
+
+/* Track */
+#progressBar::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 10px;
+}
+
+/* Thumb */
+#progressBar::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #4facfe;
+  margin-top: -4px;
+  cursor: pointer;
+}
+
+.time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #ddd;
+  margin-top: 5px;
+}
+
+/* RANGE BAR */
+#progressBar {
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    #4facfe 0%,
+    #4facfe 0%,
+    rgba(255,255,255,0.2) 0%,
+    rgba(255,255,255,0.2) 100%
+  );
+}
+
+/* Thumb */
+#progressBar::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #4facfe;
+  cursor: pointer;
+  margin-top: -4px;
+}
+
+
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 900px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .music-section {
+    height: auto;
+  }
+
   .messeges {
     height: 280px;
   }
-
-  #messege {
-    font-size: 13px;
-  }
-
-  #sendbtn {
-    font-size: 13px;
-    padding: 0 16px;
-  }
 }
+
