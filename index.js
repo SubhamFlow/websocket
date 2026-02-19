@@ -7,10 +7,17 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
+let currentTrack = null; // store last played song
+
 
 
 io.on("connection", (socket) => {
   console.log("User connected");
+
+  // Send current song to new user
+  if (currentTrack) {
+    socket.emit("play-song", currentTrack);
+  }
 
   // Chat messages
   socket.on("sender-messege", (messege) => {
@@ -20,6 +27,8 @@ io.on("connection", (socket) => {
   // Music sync
   socket.on("play-song", (track) => {
     if (!track || !track.preview) return;
+
+    currentTrack = track;   // save latest track
     io.emit("play-song", track);
   });
 
@@ -29,6 +38,7 @@ io.on("connection", (socket) => {
 });
 
 
+//music-api
 
 app.get("/search", async (req, res) => {
   try {
@@ -62,7 +72,9 @@ app.get("/search", async (req, res) => {
 });
 
 
+
 app.use(express.static(path.join(__dirname, "public")));
+
 
 const PORT = process.env.PORT || 3000;
 
