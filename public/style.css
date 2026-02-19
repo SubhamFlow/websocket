@@ -33,7 +33,7 @@ h1 {
   padding: 15px;
   overflow-y: auto;
   backdrop-filter: blur(10px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
   margin-bottom: 15px;
 }
 
@@ -49,28 +49,37 @@ h1 {
   word-wrap: break-word;
 }
 
-/* Input section */
+/* Input + Button container */
+.input-area {
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Input */
 #messege {
-  width: 70%;
-  max-width: 350px;
-  padding: 10px;
+  flex: 1;
+  height: 45px;
+  padding: 0 15px;
   border-radius: 25px;
   border: none;
   outline: none;
-  font-size: 15px;
-  margin-right: 10px;
+  font-size: 14px;
 }
 
 /* Button */
 #sendbtn {
-  padding: 10px 18px;
+  height: 45px;
+  padding: 0 20px;
   border-radius: 25px;
   border: none;
   background: #4facfe;
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 #sendbtn:hover {
@@ -85,50 +94,11 @@ h1 {
   }
 
   #messege {
-    width: 65%;
-    font-size: 14px;
+    font-size: 13px;
   }
 
   #sendbtn {
-    padding: 8px 14px;
-    font-size: 14px;
+    font-size: 13px;
+    padding: 0 16px;
   }
-}
-
-/* Input + Button container */
-.input-area {
-  width: 90%;
-  max-width: 500px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Input field */
-#messege {
-  flex: 1;
-  height: 42px;
-  padding: 0 15px;
-  border-radius: 25px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-}
-
-/* Button */
-#sendbtn {
-  height: 42px;
-  padding: 0 18px;
-  border-radius: 25px;
-  border: none;
-  background: #4facfe;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-#sendbtn:hover {
-  background: #00c6ff;
-  transform: scale(1.05);
 }
