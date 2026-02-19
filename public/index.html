@@ -7,47 +7,197 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Real time communication</h1>
-    <div class="messeges">
 
+<div class="main-container">
+
+  <!-- LEFT SIDE (CHAT) -->
+  <div class="chat-section">
+    <h1>Real time Communication (Chat Room)</h1>
+
+    <div class="messeges"></div>
+
+    <div class="input-area">
+      <input type="text" id="messege" placeholder="Enter message">
+      <button id="sendbtn">Send</button>
     </div>
-   <div class="input-area">
-    <input type="text" id="messege" placeholder="Enter messege">
-    <button id="sendbtn">Send</button>
+  </div>
+
+  <!-- RIGHT SIDE (MUSIC) -->
+  <div class="music-section">
+    <h2>🎵 Music Room</h2>
+
+    <div class="song-search">
+      <input type="text" id="songSearch" placeholder="Search song...">
+      <button id="searchSongBtn">Search</button>
+    </div>
+
+    <div id="results"></div>
+
+
+<div class="custom-player">
+  <img id="coverImage" src="second.jpg" alt="cover">
+
+  <div class="player-info">
+    <span id="songTitle">Lovely - Billie Eilish</span>
+
+    <div class="progress-container">
+      <input type="range" id="progressBar" value="0" min="0" max="100">
+    </div>
+
+    <div class="time">
+      <span id="currentTime">0:00</span>
+      <span id="duration">0:00</span>
+    </div>
+  </div>
+
+  <button id="playPause">▶</button>
 </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket=io();
-        const btn=document.getElementById("sendbtn");
-        const messegeinput=document.getElementById("messege");
-        const showmesseges=document.querySelector(".messeges");
 
-        socket.on("messege",(messege)=>{
-            let p=document.createElement("p");
-          p.innerText=messege;
-          showmesseges.appendChild(p);
-            
-        })
-        
-        //enter messege
-        messegeinput.addEventListener("keydown",(e)=>{
-        if(e.key==="Enter"){
-        const messege = messegeinput.value.trim();
-    if (!messege) return;
+<audio id="audioPlayer" src="second.mp3"></audio>
 
-    socket.emit("sender-messege", messege);
-    messegeinput.value = "";
-            }
-        })
 
-        btn.addEventListener("click",(e)=>{
-            const messege=messegeinput.value;
-            console.log(messege);
-            socket.emit("sender-messege",messege);
-            
-        })
-    </script> 
+  </div>
+
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+
+
+const btn = document.getElementById("sendbtn");
+const messegeinput = document.getElementById("messege");
+const showmesseges = document.querySelector(".messeges");
+
+socket.on("messege", (messege) => {
+  const p = document.createElement("p");
+  p.innerText = messege;
+  showmesseges.appendChild(p);
+});
+
+btn.addEventListener("click", sendMessage);
+messegeinput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendMessage();
+});
+
+function sendMessage() {
+  const msg = messegeinput.value.trim();
+  if (!msg) return;
+
+  socket.emit("sender-messege", msg);
+  messegeinput.value = "";
+}
+
+
+
+const searchBtn = document.getElementById("searchSongBtn");
+const searchInput = document.getElementById("songSearch");
+const resultsDiv = document.getElementById("results");
+
+const audio = document.getElementById("audioPlayer");
+const playPause = document.getElementById("playPause");
+const songTitle = document.getElementById("songTitle");
+const coverImage = document.getElementById("coverImage");
+
+const progressBar = document.getElementById("progressBar");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
+
+//search-Song
+
+searchBtn.addEventListener("click", async () => {
+  const song = searchInput.value.trim();
+  if (!song) return;
+
+  const res = await fetch(`/search?song=${song}`);
+  const tracks = await res.json();
+
+  resultsDiv.innerHTML = "";
+
+  tracks.forEach(track => {
+    const div = document.createElement("div");
+    div.classList.add("song-item");
+
+    div.innerHTML = `
+      <img src="${track.image}" width="50">
+      <div>
+        <strong>${track.title}</strong><br>
+        <small>${track.artist}</small>
+      </div>
+    `;
+
+    div.addEventListener("click", () => {
+      socket.emit("play-song", track);
+    });
+
+    resultsDiv.appendChild(div);
+  });
+});
+
+//Play-Song
+
+socket.on("play-song", (track) => {
+  if (!track || !track.preview) return;
+
+  audio.src = track.preview;
+  songTitle.innerText = `${track.title} - ${track.artist}`;
+  coverImage.src = track.image;
+
+  audio.play().catch(err => console.log("Autoplay blocked:", err));
+  playPause.innerText = "⏸";
+});
+
+
+//Pasue Song
+
+playPause.addEventListener("click", () => {
+  if (!audio.src) return;
+
+  if (audio.paused) {
+    audio.play();
+    playPause.innerText = "⏸";
+  } else {
+    audio.pause();
+    playPause.innerText = "▶";
+  }
+});
+
+//Progress-bar
+
+audio.addEventListener("timeupdate", () => {
+  if (!audio.duration) return;
+
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressBar.value = percent;
+
+  currentTimeEl.innerText = formatTime(audio.currentTime);
+  durationEl.innerText = formatTime(audio.duration);
+});
+
+progressBar.addEventListener("input", () => {
+  if (!audio.duration) return;
+  audio.currentTime = (progressBar.value / 100) * audio.duration;
+});
+
+
+function formatTime(time) {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60)
+    .toString()
+    .padStart(2, "0");
+  return `${minutes}:${seconds}`;
+}
+
+
+
+
+window.addEventListener("DOMContentLoaded", () => {
+  audio.pause();
+  playPause.innerText = "▶";
+});
+</script>
+
+
 </body>
-
-</html>
-
+</html> 
