@@ -7,49 +7,61 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-let currentTrack = null; // store last played song
-
-
+let currentTrack = null;
 
 io.on("connection", (socket) => {
+
   console.log("User connected");
 
-  // Send current song to new user
+ 
+ socket.on("typing", () => {
+  socket.broadcast.emit("typing");
+});
+
+  socket.on("stop-typing", () => {
+    socket.broadcast.emit("stop-typing");
+  });
+
+
   if (currentTrack) {
     socket.emit("play-song", currentTrack);
   }
 
-  // Chat messages
-  socket.on("sender-messege", (messege) => {
-    io.emit("messege", messege);
+
+  socket.on("sender-messege", (data) => {
+
+    if (typeof data === "string") {
+      io.emit("messege", data);
+      return;
+    }
+
+    if (data && data.text) {
+      io.emit("messege", data);
+    }
   });
 
-  // Music sync
+  
   socket.on("play-song", (track) => {
     if (!track || !track.preview) return;
 
-    currentTrack = track;   // save latest track
+    currentTrack = track;
     io.emit("play-song", track);
   });
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
+
 });
 
-
-//music-api
 
 app.get("/search", async (req, res) => {
   try {
     const song = req.query.song;
-
-    if (!song) {
-      return res.status(400).json({ error: "Song query missing" });
-    }
+    if (!song) return res.status(400).json({ error: "Song query missing" });
 
     const response = await fetch(
-      `https://itunes.apple.com/search?term=${encodeURIComponent(song)}&media=music&limit=6`
+      `https://itunes.apple.com/search?term=${encodeURIComponent(song)}&media=music&limit=12`
     );
 
     const data = await response.json();
@@ -72,9 +84,7 @@ app.get("/search", async (req, res) => {
 });
 
 
-
 app.use(express.static(path.join(__dirname, "public")));
-
 
 const PORT = process.env.PORT || 3000;
 
