@@ -15,6 +15,13 @@
     <h1>Real time Communication (Chat Room)</h1>
 
     <div class="messeges"></div>
+    <!-- Typing indecator -->
+    <div id="typingIndicator" style="
+  color: white;
+  font-size: 14px;
+  margin-bottom: 8px;
+  height: 18px;
+"></div>
 
     <div class="input-area">
       <input type="text" id="messege" placeholder="Enter message">
@@ -63,6 +70,14 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+let username = localStorage.getItem("username");
+
+if (!username) {
+  username = prompt("Enter your name:");
+  localStorage.setItem("username", username);
+}
+
+const avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
 const socket = io();
 
 
@@ -70,10 +85,53 @@ const btn = document.getElementById("sendbtn");
 const messegeinput = document.getElementById("messege");
 const showmesseges = document.querySelector(".messeges");
 
-socket.on("messege", (messege) => {
-  const p = document.createElement("p");
-  p.innerText = messege;
-  showmesseges.appendChild(p);
+//Typing indecator detection
+
+const typingIndicator = document.getElementById("typingIndicator");
+let typingTimeout;
+
+// Detect typing
+messegeinput.addEventListener("input", () => {
+  socket.emit("typing");
+
+  clearTimeout(typingTimeout);
+
+  typingTimeout = setTimeout(() => {
+    socket.emit("stop-typing");
+  }, 1000);
+});
+
+// Show typing message
+socket.on("typing", () => {
+  typingIndicator.innerText = "Someone is typing...😉";
+  
+});
+// Remove typing message
+socket.on("stop-typing", () => {
+  typingIndicator.innerText = "";
+});
+
+
+socket.on("messege", (data) => {
+
+  const msgDiv = document.createElement("div");
+  msgDiv.classList.add("chat-msg");
+
+  // If message is from me
+  if (data.user === username) {
+    msgDiv.classList.add("my-msg");
+  }
+
+  msgDiv.innerHTML = `
+    <img src="${data.avatar}" class="avatar">
+    <div class="msg-bubble">
+      <strong>${data.user}</strong><br>
+      ${data.text}
+    </div>
+  `;
+
+  showmesseges.appendChild(msgDiv);
+  showmesseges.scrollTop = showmesseges.scrollHeight;
 });
 
 btn.addEventListener("click", sendMessage);
@@ -85,10 +143,14 @@ function sendMessage() {
   const msg = messegeinput.value.trim();
   if (!msg) return;
 
-  socket.emit("sender-messege", msg);
+  socket.emit("sender-messege", {
+    text: msg,
+    user: username,
+    avatar: avatar
+  });
+
   messegeinput.value = "";
 }
-
 
 
 const searchBtn = document.getElementById("searchSongBtn");
@@ -189,13 +251,11 @@ function formatTime(time) {
   return `${minutes}:${seconds}`;
 }
 
-
-
-
 window.addEventListener("DOMContentLoaded", () => {
   audio.pause();
   playPause.innerText = "▶";
 });
+
 </script>
 
 
