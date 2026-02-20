@@ -12,7 +12,14 @@ let currentTrack = null;
 io.on("connection", (socket) => {
 
   console.log("User connected");
+  
+socket.on("searching", () => {
+  socket.broadcast.emit("searching");
+});
 
+socket.on("stop-searching", () => {
+  socket.broadcast.emit("stop-searching");
+});
  
  socket.on("typing", () => {
   socket.broadcast.emit("typing");
