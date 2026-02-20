@@ -79,6 +79,9 @@ h1 {
   padding: 0 15px;
 }
 
+#messege:focus{
+  outline:2px solid rgb(55, 224, 55);
+}
 #sendbtn {
   height: 45px;
   padding: 0 20px;
@@ -122,6 +125,9 @@ h1 {
   padding: 0 12px;
 }
 
+.song-search input:focus{
+  outline: 2px solid rgb(55, 224, 55);
+}
 .song-search button {
   height: 40px;
   padding: 0 16px;
@@ -320,6 +326,49 @@ h1 {
   background: #4facfe;
   cursor: pointer;
   margin-top: -4px;
+}
+
+
+/*Typing indecator */
+
+#typingIndicator {
+  color: #ccc;
+  font-size: 14px;
+  height: 18px;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.chat-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* .chat-msg.my-msg {
+  flex-direction: row-reverse;
+} */
+
+/* Avatars */
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.msg-bubble {
+  background: #30960a;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.my-msg .msg-bubble {
+  background: #00c6ff;
 }
 
 
