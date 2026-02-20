@@ -37,6 +37,7 @@
       <input type="text" id="songSearch" placeholder="Search song...">
       <button id="searchSongBtn">Search</button>
     </div>
+<div id="searchIndicator" style="color:white; height:15px;"></div>
 
     <div id="results"></div>
 
@@ -63,13 +64,18 @@
 <audio id="audioPlayer" src="second.mp3"></audio>
 
 
-  </div>
+</div>
 
 </div>
 
+<audio id="msgSound" src="preview.mp3"preload="auto"></audio>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+  document.body.addEventListener("click", () => {
+   msgSound.play().then(() => msgSound.pause());
+  }, { once: true });
+
 let username = localStorage.getItem("username");
 
 if (!username) {
@@ -84,6 +90,40 @@ const socket = io();
 const btn = document.getElementById("sendbtn");
 const messegeinput = document.getElementById("messege");
 const showmesseges = document.querySelector(".messeges");
+
+// Search song detaction
+const searchInput = document.getElementById("songSearch");
+const searchIndicator = document.getElementById("searchIndicator");
+
+let searchTimeout;
+
+searchInput.addEventListener("input", () => {
+  socket.emit("searching");
+
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    socket.emit("stop-searching");
+  }, 1000);
+});
+
+socket.on("searching", () => {
+  searchIndicator.innerText = "Someone is searching song… 🔍";
+});
+
+socket.on("stop-searching", () => {
+  searchIndicator.innerText = "";
+});
+
+// const searchIndicator = document.getElementById("searchIndicator");
+
+socket.on("searching", () => {
+  searchIndicator.innerText = "Someone is searching… 🔍";
+});
+
+socket.on("stop-searching", () => {
+  searchIndicator.innerText = "";
+});
+
 
 //Typing indecator detection
 
@@ -111,16 +151,20 @@ socket.on("stop-typing", () => {
   typingIndicator.innerText = "";
 });
 
-
+const msgSound = document.getElementById("msgSound");
 socket.on("messege", (data) => {
 
   const msgDiv = document.createElement("div");
   msgDiv.classList.add("chat-msg");
 
-  // If message is from me
-  if (data.user === username) {
+  //play for other user end
+   if (data.user !== username) {
+    msgSound.currentTime = 0;
+    msgSound.play().catch(err => console.log("Sound blocked:", err));
+  } else {
     msgDiv.classList.add("my-msg");
   }
+
 
   msgDiv.innerHTML = `
     <img src="${data.avatar}" class="avatar">
@@ -154,7 +198,7 @@ function sendMessage() {
 
 
 const searchBtn = document.getElementById("searchSongBtn");
-const searchInput = document.getElementById("songSearch");
+// const searchInput = document.getElementById("songSearch");
 const resultsDiv = document.getElementById("results");
 
 const audio = document.getElementById("audioPlayer");
@@ -180,7 +224,6 @@ searchBtn.addEventListener("click", async () => {
   tracks.forEach(track => {
     const div = document.createElement("div");
     div.classList.add("song-item");
-
     div.innerHTML = `
       <img src="${track.image}" width="50">
       <div>
